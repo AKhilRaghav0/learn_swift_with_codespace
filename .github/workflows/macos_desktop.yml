@@ -1,0 +1,26 @@
+name: Build iOS App with Xcode
+on:
+  workflow_dispatch: # Manually trigger the workflow
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  build:
+    runs-on: macOS-latest
+    timeout-minutes: 30 # Set a time limit of 30 minutes for the job, Please dont misuse it
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set Up Environment
+      env:
+        NGROK_AUTH_TOKEN: ${{ secrets.NGROK_AUTH_TOKEN }}
+        PASSWD: ${{ secrets.PASSWD }}
+      run: source start.sh "$PASSWD" "$PASSWD" "$NGROK_AUTH_TOKEN"
+
+    - name: ngrok is now listening to VNC connections on...
+      run: curl --silent http://127.0.0.1:4040/api/tunnels | jq '.tunnels[0].public_url'
+
+    - name: Set Up tmate Session
+      uses: mxschmitt/action-tmate@v2
