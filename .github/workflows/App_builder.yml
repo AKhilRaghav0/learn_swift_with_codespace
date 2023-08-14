@@ -1,9 +1,7 @@
 name: Build and Release iOS App
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch: # Allow manual triggering
 
 jobs:
   build:
@@ -13,10 +11,15 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v2
 
-#    - name: Set up Xcode
-#      uses: actions/setup-xcode@v2
-#      with:
-#        xcode-version: 13
+    - name: Ask for Repository
+      id: repo
+      run: |
+        echo "::set-output name=REPO::$(read -p 'Enter the GitHub repository (username/repo): ' repo && echo $repo)"
+
+ #   - name: Set up Xcode
+ #     uses: actions/setup-xcode@v2
+ #     with:
+ #       xcode-version: 13
 
     - name: Install CocoaPods
       run: |
@@ -25,8 +28,8 @@ jobs:
 
     - name: Build and Archive
       run: |
-        xcodebuild archive -workspace YourApp.xcworkspace -scheme YourScheme -archivePath build/YourApp.xcarchive 
-#change YourScheme and Your.xworkspace 
+        xcodebuild archive -workspace YourApp.xcworkspace -scheme YourScheme -archivePath build/YourApp.xcarchive
+# Chanhe YourApp.xcworkspace and YourScheme with apparent file name
     - name: Create IPA
       run: |
         xcodebuild -exportArchive -archivePath build/YourApp.xcarchive -exportPath build -exportOptionsPlist ExportOptions.plist
