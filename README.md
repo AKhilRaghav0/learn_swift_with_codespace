@@ -7,7 +7,7 @@
 ### Todo_List
 
 - [x] Swift Env in Codespace
-- [ ] YML for building IOS apps without Mac
+- [x] YML for building IOS apps without Mac
 - [ ] Still processing more (thoughts).
 - [x] Complete MacOS Desktop with 30min Time limit (TO stop abuse)
 - [ ] 
